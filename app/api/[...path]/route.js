@@ -6,10 +6,7 @@ const BASE="https://allmanga.to"
 export async function GET(req,{params}){
 
 const path=params.path || []
-
 const action=path[0]
-
-/* SEARCH */
 
 if(action==="search"){
 
@@ -21,21 +18,25 @@ const $=cheerio.load(data)
 
 const results=[]
 
-$(".item").each((i,el)=>{
+$("a").each((i,el)=>{
+
+const title=$(el).text().trim()
+
+if(title.length>3){
 
 results.push({
-id:$(el).find("a").attr("href"),
-title:$(el).find(".name").text(),
-image:$(el).find("img").attr("src")
+title,
+id:$(el).attr("href"),
+image:""
 })
-
-})
-
-return Response.json(results)
 
 }
 
-/* ANIME */
+})
+
+return Response.json(results.slice(0,20))
+
+}
 
 if(action==="anime"){
 
@@ -47,20 +48,24 @@ const $=cheerio.load(data)
 
 const episodes=[]
 
-$(".episode").each((i,el)=>{
+$("a").each((i,el)=>{
+
+const txt=$(el).text()
+
+if(txt.includes("Episode")){
 
 episodes.push({
 id:$(el).attr("href"),
-number:$(el).text()
+number:txt
 })
+
+}
 
 })
 
 return Response.json(episodes)
 
 }
-
-/* STREAM */
 
 if(action==="stream"){
 
@@ -76,6 +81,5 @@ stream:match?match[0]:null
 
 }
 
-return Response.json({error:"invalid endpoint"})
-
+return Response.json({error:"invalid"})
 }
