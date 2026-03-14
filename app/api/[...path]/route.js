@@ -1,5 +1,5 @@
 import axios from "axios"
-import cheerio from "cheerio"
+import { load } from "cheerio"
 
 const BASE="https://allmanga.to"
 
