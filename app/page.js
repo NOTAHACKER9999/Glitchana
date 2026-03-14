@@ -31,8 +31,6 @@ video.current.src=stream
 
 async function search(q){
 
-if(!q) return
-
 const res=await fetch("/api/search?q="+q)
 
 setResults(await res.json())
@@ -59,12 +57,12 @@ setStream(data.stream)
 
 return(
 
-<div style={{padding:40,fontFamily:"sans-serif"}}>
+<div style={{padding:40}}>
 
 <h1>Anime</h1>
 
 <input
-placeholder="Search anime"
+placeholder="Search"
 onChange={e=>search(e.target.value)}
 />
 
@@ -74,12 +72,10 @@ onChange={e=>search(e.target.value)}
 
 <div key={a.id}>
 
-<img src={a.image} width="120"/>
-
 <p>{a.title}</p>
 
 <button onClick={()=>loadAnime(a.id)}>
-Open
+Episodes
 </button>
 
 </div>
